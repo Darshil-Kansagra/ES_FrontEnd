@@ -14,5 +14,18 @@ namespace ES_FrontEnd.Controllers
         {
             return View();
         }
+        public IActionResult SaveForm(ContactModel model)
+        {
+            if(ModelState.IsValid)
+            {
+                ViewBag.Message = "Success";
+                return View("Contact");
+            }
+            else
+            {
+                ViewBag.Message = "Failed";
+                return View("Contact");
+            }
+        }
     }
 }
