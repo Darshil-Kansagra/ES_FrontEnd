@@ -10,22 +10,29 @@ namespace ES_FrontEnd.Controllers
         {
             return View();
         }
-        public IActionResult Contact()
+
+        #region ContactViewPage
+        [Route("Contact")]
+        public IActionResult ContactPage()
         {
             return View();
         }
+        #endregion
+
+        #region SaveContactData
         public IActionResult SaveForm(ContactModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 ViewBag.Message = "Success";
-                return View("Contact");
+                return View("ContactPage");
             }
             else
             {
                 ViewBag.Message = "Failed";
-                return View("Contact");
+                return View("ContactPage");
             }
         }
+        #endregion
     }
 }

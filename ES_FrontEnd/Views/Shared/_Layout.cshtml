@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-b">Search Product</button>
+                        <button type="submit" class="btn btn-b" asp-controller="Product" asp-action="Index">Search Product</button>
                     </div>
                 </div>
             </form>
@@ -86,11 +86,15 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " href="about.html">Order</a>
+                        <a class="nav-link " asp-controller="Order" asp-action="Index">Order</a>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " asp-controller="Home" asp-action="Contact">Contact</a>
+                        <a class="nav-link " asp-controller="Home" asp-action="ContactPage">Contact</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link " asp-controller="User" asp-action="Login">Login</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -154,7 +158,7 @@
                                 <a asp-controller="Home" asp-action="Index">Home</a>
                             </li>
                             <li class="list-inline-item">
-                                <a asp-controller="Home" asp-action="Contact">Contact</a>
+                                <a asp-controller="Home" asp-action="ContactPage">Contact</a>
                             </li>
                         </ul>
                     </nav>

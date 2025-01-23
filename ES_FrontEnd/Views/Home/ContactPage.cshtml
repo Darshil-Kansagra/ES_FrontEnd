@@ -10,7 +10,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <div class="form-group">
-                                        <input type="text" asp-for="Name" class="form-control form-control-lg form-control-a" placeholder="Your Name"/>
+                                        <input type="text" asp-for="Name" class="form-control form-control-lg form-control-a" placeholder="Your Name" />
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-3">
@@ -30,8 +30,21 @@
                                 </div>
                                 <div class="col-md-12 my-3">
                                     <div class="mb-3">
-                                        @if(ViewBag.Message == "Success"){
-                                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                                        @if (ViewBag.Message == "Success")
+                                        {
+                                            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+                                            <script type="text/javascript">
+                                                $(document).ready(function (e) {
+                                                  swal("Thank you", "Your message has been sent.", {
+                                                    icon: "success",
+                                                    buttons: {
+                                                      confirm: {
+                                                        className: "btn btn-success",
+                                                      },
+                                                    },
+                                                  });
+                                                });
+                                            </script>
                                         }
                                         else if (ViewBag.Message == "Failed")
                                         {
@@ -127,3 +140,5 @@
         </div>
     </div>
 </section><!-- End Contact Single-->
+<link rel="stylesheet" href="~/css/plugins.min.css" />
+<script src="~/js/plugin/sweetalert/sweetalert.min.js"></script>
