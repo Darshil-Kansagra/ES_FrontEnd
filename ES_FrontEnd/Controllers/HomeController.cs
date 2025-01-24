@@ -6,10 +6,12 @@ namespace ES_FrontEnd.Controllers
 {
     public class HomeController : Controller
     {
+        #region HomePage
         public IActionResult Index()
         {
             return View();
-        }
+        } 
+        #endregion
 
         #region ContactViewPage
         [Route("Contact")]

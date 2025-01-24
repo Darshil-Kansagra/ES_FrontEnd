@@ -2,6 +2,7 @@
 
 namespace ES_FrontEnd.Controllers
 {
+    [CheckAccess]
     public class OrderController : Controller
     {
         #region ViewPage

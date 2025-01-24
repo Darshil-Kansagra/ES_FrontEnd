@@ -25,7 +25,25 @@ h1 {
     font-weight: bold;
     margin: 0;
 }
+.btn-danger {
+    background: rgb(242, 89, 97) !important;
+    border-color: rgb(242, 89, 97) !important;
+}
 
+.btn-success {
+    background: rgb(49, 206, 54) !important;
+    border-color: rgb(49, 206, 54) !important;
+}
+
+.text-success {
+    color: rgb(49, 206, 54) !important;
+    border-color: rgb(49, 206, 54) !important;
+}
+
+.text-danger {
+    color: rgb(242, 89, 97) !important;
+    border-color: rgb(242, 89, 97) !important;
+}
 p {
     font-size: 14px;
     font-weight: 100;

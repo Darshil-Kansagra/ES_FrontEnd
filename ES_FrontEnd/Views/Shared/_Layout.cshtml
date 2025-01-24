@@ -86,24 +86,27 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link " asp-controller="Order" asp-action="Index">Order</a>
-                    </li>
-
-                    <li class="nav-item">
                         <a class="nav-link " asp-controller="Home" asp-action="ContactPage">Contact</a>
                     </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link " asp-controller="User" asp-action="Login">Login</a>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hi,User</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item " href="property-single.html">My Profile</a>
-                            <a class="dropdown-item " href="blog-single.html">Logout</a>
-                        </div>
-                    </li>
+                    @if(CommonVariable.UserId() == null)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link " asp-controller="User" asp-action="Login">Login</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link " asp-controller="Order" asp-action="Index">Order</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Hi,@CommonVariable.UserName()</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item " asp-controller="User" asp-action="MyProfile">My Profile</a>
+                                <a class="dropdown-item " asp-controller="User" asp-action="Logout">Logout</a>
+                            </div>
+                        </li>
+                    }
                 </ul>
             </div>
 
