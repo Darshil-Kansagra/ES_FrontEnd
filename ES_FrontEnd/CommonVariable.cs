@@ -31,5 +31,14 @@
             }
             return _httpContextAccessor.HttpContext.Session.GetString("Email");
         }
+
+        public static string Role()
+        {
+            if (_httpContextAccessor.HttpContext.Session.GetString("Role") == null)
+            {
+                return null;
+            }
+            return _httpContextAccessor.HttpContext.Session.GetString("Role");
+        }
     }
 }

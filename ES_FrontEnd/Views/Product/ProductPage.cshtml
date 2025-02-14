@@ -1,60 +1,52 @@
-﻿<div class="container">
+﻿@model ProductModel
+<div class="container">
     <div class="col-md-12 section-t8">
-        <div class="text-center">
-            <h4 class="display-4 color-b">Products</h4>
-        </div>
-        <div class="row">
-            @for(int i = 1; i <= 5; i++)
-            {
-                <div class="carousel-item-b col-md-4 mb-4">
-                    <div class="card-box-a card-shadow">
-                        <div class="img-box-a">
-                            <img src="~/img/O General ASGG18CETA B Split Wall Mounted Innovation Inverter AC.jpg" alt="" class="img-a img-fluid">
-                        </div>
-                        <div class="card-overlay">
-                            <div class="card-overlay-a-content">
-                                <div class="card-header-a">
-                                    <h2 class="card-title-a">
-                                        O General ASGG18CETA B Split
-                                        <br /> Wall Mounted Innovation Inverter AC
-                                    </h2>
-                                </div>
-                                <div class="card-body-a">
-                                    <div class="price-box d-flex">
-                                        <span class="price-a">Rs 63,000</span>
+        @if (TempData["message"] != null)
+        {
+            <div class="text-center">
+                <h6 class="display-6">@TempData["message"]</h6>
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <h4 class="display-4 color-b">Products</h4>
+            </div>
+            <div class="row">
+                @foreach (var products in ViewBag.Products)
+                {
+                    <div class="carousel-item-b col-md-4 mb-4">
+                        <div class="card-box-a card-shadow">
+                            <div class="img-box-a">
+                                <img src="~/img/@products.ImageUrl" alt="" class="img-a img-fluid d-block mx-auto">
+                            </div>
+                            <div class="card-overlay">
+                                <div class="card-overlay-a-content">
+                                    <div class="card-header-a">
+                                        <h2 class="card-title-a">
+                                            @products.ProductName
+                                        </h2>
                                     </div>
-                                    <a href="#" class="link-a">
-                                        Click here to view
-                                        <span class="bi bi-chevron-right"></span>
-                                    </a>
-                                </div>
-                                <div class="card-footer-a">
-                                    <ul class="card-info d-flex justify-content-around">
-                                        <li>
-                                            <h4 class="card-info-title">Capacity</h4>
-                                            <span>
-                                                1.5 Ton
-                                            </span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Refrigerant</h4>
-                                            <span>R 32</span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Color</h4>
-                                            <span>White</span>
-                                        </li>
-                                        <li>
-                                            <h4 class="card-info-title">Star Rating</h4>
-                                            <span>5</span>
-                                        </li>
-                                    </ul>
+                                    <div class="card-body-a">
+                                        <div class="price-box d-flex">
+                                            <span class="price-a">Rs @products.Price</span>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer-a">
+                                        <ul class="card-info d-flex justify-content-around">
+                                            <li>
+                                                <a class="link-hover-black" asp-controller="Product" asp-action="ProductSingle" asp-route-id="@products.ProductId">
+                                                    Click to view
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </div>
+                }
+            </div>
+        }
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@model SearchProductModel;
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -9,7 +10,7 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="~/img/favicon.png" rel="icon">
+    <link href="~/img/Darshil-Refrigeration.png" rel="icon">
     <link href="~/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
@@ -42,26 +43,26 @@
         </div>
         <span class="close-box-collapse right-boxed bi bi-x"></span>
         <div class="box-collapse-wrap form">
-            <form class="form-a">
+            <form class="form-a" method="post" asp-controller="Product" asp-action="Index">
                 <div class="row">
                     <div class="col-md-12 mb-2">
                         <div class="form-group">
                             <label class="pb-2" for="Type">Keyword</label>
-                            <input type="text" class="form-control form-control-lg form-control-a" placeholder="Keyword">
+                            <input type="text" class="form-control form-control-lg form-control-a" asp-for="Keyword" placeholder="Keyword"/>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="form-group mt-3">
                             <label class="pb-2" for="Type">Type</label>
-                            <select class="form-control form-select form-control-a" id="Type">
+                            <select class="form-control form-select form-control-a" asp-for="ProductType" id="Type">
                                 <option>Select Product Type</option>
-                                <option>TV</option>
-                                <option>AC</option>
+                                <option value="TV">TV</option>
+                                <option value="AC">AC</option>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-12">
-                        <button type="submit" class="btn btn-b" asp-controller="Product" asp-action="Index">Search Product</button>
+                        <button type="submit" class="btn btn-b">Search Product</button>
                     </div>
                 </div>
             </form>
@@ -88,7 +89,7 @@
                     <li class="nav-item">
                         <a class="nav-link " asp-controller="Home" asp-action="ContactPage">Contact</a>
                     </li>
-                    @if(CommonVariable.UserId() == null)
+                    @if (CommonVariable.UserId() == null)
                     {
                         <li class="nav-item">
                             <a class="nav-link " asp-controller="User" asp-action="Login">Login</a>

@@ -1,0 +1,97 @@
+﻿@using ES_FrontEnd.Areas.Admin.Models
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProductModel
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Insert Product</h5>
+
+        <!-- General Form Elements -->
+        <form asp-area="Admin" asp-controller="Product" asp-action="Save" method="post" enctype="multipart/form-data">
+            <div class="row mb-3">
+                <div class="col-sm-10">
+                    <input type="hidden" class="form-control" asp-for="ProductId">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">ProductName</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="ProductName">
+                    <span asp-validation-for="ProductName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputText" class="col-sm-2 col-form-label">Description </label>
+                <div class="col-sm-10">
+                    <textarea class="form-control" asp-for="Description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Price</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" asp-for="Price">
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">ProductType</label>
+                <div class="col-sm-10">
+                    <select class="form-control form-select form-control-a" asp-for="ProductType">
+                        <option>Select Product Type</option>
+                        <option value="TV">TV</option>
+                        <option value="AC">AC</option>
+                    </select>
+                    <span asp-validation-for="ProductType" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">StockQuantity</label>
+                <div class="col-sm-10">
+                    <input type="number" class="form-control" asp-for="StockQuantity">
+                    <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label for="inputEmail" class="col-sm-2 col-form-label">Image</label>
+                <div class="col-sm-10">
+                    <input type="file" class="form-control" name="image">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Save Record</label>
+                <div class="col-sm-10">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+
+        </form><!-- End General Form Elements -->
+
+    </div>
+</div>
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(()=>{
+            swal("@TempData["message"]", {
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
+                },
+              },
+            });
+        })
+    </script>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

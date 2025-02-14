@@ -1,0 +1,273 @@
+﻿@using ES_FrontEnd.Areas.Admin.Models
+@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model ProductModel
+<!-- Template Main CSS File -->
+<link href="~/css/style.css" rel="stylesheet">
+
+@if(Model.ProductId != null)
+{
+    <div class="col-md-12 col-lg-8">
+        <div class="title-single-box">
+            <h1 class="title-single">@Model.ProductName</h1>
+            <span class="color-text-a" id="ptype">@Model.ProductType</span>
+            <input type="hidden" id="ProductId" value="@Model.ProductId" />
+        </div>
+    </div>
+    <!-- ======= Property Single ======= -->
+    <section class="property-single nav-arrow-b">
+        <div class="container">
+            <div class="row justify-content-center">
+                        <img src="~/img/@Model.ImageUrl" style="height:40em" alt="" >
+                    <div class="property-single-carousel-pagination carousel-pagination"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="row justify-content-between">
+                        <div class="col-md-5 col-lg-4">
+                            <div class="property-price d-flex justify-content-center foo">
+                                <div class="card-header-c d-flex">
+                                    <div class="card-box-ico">
+                                        <span class="bi bi-cash">Rs</span>
+                                    </div>
+                                    <div class="card-title-c align-self-center">
+                                        <h5 class="title-c">@Model.Price</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="property-summary">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="title-box-d section-t4">
+                                            <h3 class="title-d">Specification</h3>
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                @if(Model.ProductType=="AC")
+                                {
+                                    <div class="summary-list">
+                                        <ul class="list">
+                                            <li class="d-flex justify-content-between">
+                                                <strong>ModelNumber:</strong>
+                                                <span>1134</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Brand:</strong>
+                                                <span>Chicago, IL 606543</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Capacity:</strong>
+                                                <span>House</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Refrigerant:</strong>
+                                                <span>Sale</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Voltage:</strong>
+                                                <span>
+                                                    340m
+                                                    <sup>2</sup>
+                                                </span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Color:</strong>
+                                                <span>4</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Warranty:</strong>
+                                                <span>2</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>StarRating:</strong>
+                                                <span>1</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>BrochureUrl:</strong>
+                                                <span>1</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                                else if(Model.ProductType=="TV")
+                                {
+                                    <div class="summary-list">
+                                        <ul class="list">
+                                            <li class="d-flex justify-content-between">
+                                                <strong>ModelNumber:</strong>
+                                                <span>1134</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Brand:</strong>
+                                                <span>Chicago, IL 606543</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Capacity:</strong>
+                                                <span>House</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Refrigerant:</strong>
+                                                <span>Sale</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Voltage:</strong>
+                                                <span>
+                                                    340m
+                                                    <sup>2</sup>
+                                                </span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Color:</strong>
+                                                <span>4</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>Warranty:</strong>
+                                                <span>2</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>StarRating:</strong>
+                                                <span>1</span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>BrochureUrl:</strong>
+                                                <span>1</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-lg-7 section-md-t3">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="title-box-d">
+                                        <h3 class="title-d">Property Description</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="property-description">
+                                <p class="description color-text-a">
+                                    @Model.Description
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <div class="col-sm-12">
+                <button class="btn btn-success" id="btntoggle" onclick="toggleView()">Change Specification</button>
+                <form>
+                    <div id="TV">
+                        <partial name="_TVview" />
+                    </div>
+                    <div id="AC">
+                        <partial name="_ACview" />
+                    </div>
+                        <button class="btn btn-success" id="btnsave" onclick="SaveSpecification()">Save Specification</button>
+                </form>
+            </div>
+        </div>
+    </section>
+}
+else{
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(()=>{
+            swal("@TempData["message"]", {
+              buttons: {
+                confirm: {
+                  className: "btn btn-success",
+                },
+              },
+            });
+        })
+    </script>
+}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(()=>{
+        $("#TV").hide();
+        $("#AC").hide();
+        $("#btnsave").hide();
+    });
+    function toggleView(){
+        var btntoggle = document.getElementById("btntoggle");
+
+        if(btntoggle.innerText == "Change Specification"){
+            btntoggle.innerText = "Cancel";
+            btntoggle.classList.add("btn-danger");
+            btntoggle.classList.remove("btn-success");
+
+            var value = document.getElementById("ptype").innerText;
+            if(value=="TV"){
+                $("#TV").show();
+                $("#btnsave").show();
+            }
+            else if(value=="AC"){
+                $("#AC").show();
+                $("#btnsave").show();
+            }
+        }
+        else{
+            btntoggle.innerText = "Change Specification";
+            btntoggle.classList.add("btn-success");
+            btntoggle.classList.remove("btn-danger");
+            $("#TV").hide();
+            $("#AC").hide();
+            $("#btnsave").hide();
+        }
+    }
+    function SaveSpecification(){
+            console.log("save");
+            var value = document.getElementById("ptype").innerText;
+            var SpecificationData = {};
+            if(value=="TV"){
+                SpecificationData = {
+                    ModelNumber:$("#ModelNumber").val(),
+                    Brand:$("#Brand").val(),
+                    Sizes:$("#Sizes").val(),
+                    Resolution:$("#Resolution").val(),
+                    HDTechnology:$("#HDTechnology").val(),
+                    RefreshRate:$("#RefreshRate").val(),
+                    SoundTechnology:$("#SoundTechnology").val(),
+                    Warranty:$("#Warranty").val(),
+                    StarRating:$("#StarRating").val(),
+                    BUrl:$("#BUrl"),
+                    ProductId:$("#ProductId").val()
+                }
+                $.ajax({
+                    type:"POST",
+                    url:"/Admin/Specification/SaveSpecificationTV",
+                    data:SpecificationData,
+                    success:function(data){
+                        alert(data);
+                    }
+                })
+            }
+            else if(value=="AC"){
+                SpecificationData = {
+                    ModelNumber:$("#ModelNumber").val(),
+                    Brand:$("#Brand").val(),
+                    Capacity:$("#Capacity").val(),
+                    Refrigerant:$("#Refrigerant").val(),
+                    Voltage:$("#Voltage").val(),
+                    Color:$("#Color").val(),
+                    Warranty:$("#Warranty").val(),
+                    StarRating:$("#StarRating").val(),
+                    BUrl:$("#BUrl"),
+                    ProductId:$("#ProductId").val()
+                }
+                $.ajax({
+                    type:"POST",
+                    url:"/Admin/Specification/SaveSpecificationAC",
+                    data:SpecificationData,
+                    success:function(data){
+                        alert(data);
+                    }
+                })
+            }
+        }
+</script>

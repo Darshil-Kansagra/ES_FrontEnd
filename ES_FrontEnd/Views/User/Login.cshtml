@@ -12,54 +12,18 @@
             <span class="text-danger" asp-validation-for="Email"></span>
             <input type="password" placeholder="Password" asp-for="Password" />
             <span class="text-danger" asp-validation-for="Password"></span>
-            <input type="password" placeholder="Confirm Password" asp-for="ConfirmPassword" />
-            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
-            @if (ViewBag.Message == "Failed")
+            @if (TempData["message"] != null)
             {
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
                 <script type="text/javascript">
                     $(document).ready(function (e) {
-                    swal("Error!", "Please Fill All Field in the Form", {
-                      icon: "error",
+                    swal("@TempData["message"]", {
                       buttons: {
                         confirm: {
-                          className: "btn btn-danger",
+                          className: "btn btn-success",
                         },
                       },
                     });
-                    });
-                </script>
-            }
-            else if (ViewBag.Message == "Error")
-            {
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-                <script type="text/javascript">
-                    $(document).ready(function (e) {
-                    console.log(@ViewBag.Result);
-                    swal("Error!", "Username is already taken OR Incorrect Data Format", {
-                      icon: "error",
-                      buttons: {
-                        confirm: {
-                          className: "btn btn-danger",
-                        },
-                      },
-                    });
-                    });
-                </script>
-            }
-            else if (ViewBag.Message == "Success")
-            {
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-                <script type="text/javascript">
-                    $(document).ready(function (e) {
-                      swal("Welcome", "@ViewBag.Result", {
-                        icon: "success",
-                        buttons: {
-                          confirm: {
-                            className: "btn btn-success",
-                          },
-                        },
-                      });
                     });
                 </script>
             }
@@ -72,32 +36,14 @@
             <input type="text" placeholder="Username Or Email" name="NameOREmail" />
             <input type="password" placeholder="Password" name="password" asp-for="Password" />
             <span class="text-danger" asp-validation-for="Password"></span>
-            @if (ViewBag.Message == "Failed")
-            {
+            @if(TempData["message"] != null){
                 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
                 <script type="text/javascript">
                     $(document).ready(function (e) {
-                    swal("Error!", "Please Fill All Field in the Form", {
-                      icon: "error",
+                    swal("@TempData["message"]", {
                       buttons: {
                         confirm: {
-                          className: "btn btn-danger",
-                        },
-                      },
-                    });
-                    });
-                </script>
-            }
-            else if (ViewBag.Message == "Error")
-            {
-                <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-                <script type="text/javascript">
-                    $(document).ready(function (e) {
-                    swal("Error!", "@ViewBag.Result", {
-                      icon: "error",
-                      buttons: {
-                        confirm: {
-                          className: "btn btn-danger",
+                          className: "btn btn-success",
                         },
                       },
                     });
@@ -125,3 +71,8 @@
 </div>
 <link rel="stylesheet" href="~/css/plugins.min.css" />
 <script src="~/js/plugin/sweetalert/sweetalert.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

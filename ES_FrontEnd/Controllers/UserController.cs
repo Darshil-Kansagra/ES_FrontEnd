@@ -1,6 +1,7 @@
 ﻿using ES_FrontEnd.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net;
 using System.Text;
 
 namespace ES_FrontEnd.Controllers
@@ -19,8 +20,7 @@ namespace ES_FrontEnd.Controllers
 
         #region MyProfile
         [Route("MyProfile")]
-        [CheckAccess]
-        public IActionResult MyProfile()
+        public IActionResult MyProfile(dynamic? result)
         {
             return View();
         }
@@ -43,15 +43,9 @@ namespace ES_FrontEnd.Controllers
                 HttpResponseMessage res = null;
                 try
                 {
-                    var UserData = new UserModel
-                    {
-                        UserName = model.UserName,
-                        Email = model.Email,
-                        Password = model.Password,
-                        Role = "Customer",
-                        IsActive = true,
-                    };
-                    var json = JsonConvert.SerializeObject(UserData);
+                    model.IsActive = true;
+                    model.Role = "Customer";
+                    var json = JsonConvert.SerializeObject(model);
                     var content = new StringContent(json, Encoding.UTF8, "application/json");
                     res = await _httpClient.PostAsync("User/PostUser", content);
                 }
@@ -63,48 +57,43 @@ namespace ES_FrontEnd.Controllers
                 {
                     var data = await res.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    ViewBag.Message = "Success";
-                    ViewBag.Result = result.message;
+                    TempData["message"] = result.message;
+                    return View("Login");
+                }
+                else if(res != null && res.StatusCode == HttpStatusCode.BadRequest)
+                {
+                    var data = await res.Content.ReadAsStringAsync();
+                    var result = JsonConvert.DeserializeObject<dynamic>(data);
+                    Console.WriteLine(result);
+                    TempData["message"] = "Please Fill All Field in the Form";
                     return View("Login");
                 }
                 else
                 {
                     var data = await res.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    ViewBag.Message = "Error";
-                    ViewBag.Result = result.message;
+                    TempData["message"] = result.message;
                     return View("Login");
                 }
             }
             else
             {
-                ViewBag.Message = "Failed";
+                TempData["message"] = "Please Fill All Field in the Form";
                 return View("Login");
             }
         }
         #endregion
 
         #region SaveLogin
-        public async Task<IActionResult> SaveLogin(string NameOREmail, string password)
+        public async Task<IActionResult> SaveLogin(LoginModel model)
         {
             if (ModelState.IsValid)
             {
                 HttpResponseMessage res = null;
-                try
-                {
-                    var UserData = new UserModel
-                    {
-                        UserName = NameOREmail,
-                        Password = password,
-                    };
-                    var json = JsonConvert.SerializeObject(UserData);
-                    var content = new StringContent(json,Encoding.UTF8, "application/json");
-                    res = await _httpClient.PostAsync("User/Login",content);
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                var json = JsonConvert.SerializeObject(model);
+                var content = new StringContent(json,Encoding.UTF8, "application/json");
+                res = await _httpClient.PostAsync("User/Login",content);
+
                 if(res != null && res.IsSuccessStatusCode)
                 {
                     var data = await res.Content.ReadAsStringAsync();
@@ -114,26 +103,25 @@ namespace ES_FrontEnd.Controllers
                         HttpContext.Session.SetString("UserId", user.UserId.ToString());
                         HttpContext.Session.SetString("UserName", user.UserName);
                         HttpContext.Session.SetString("Email", user.Email);
+                        HttpContext.Session.SetString("Role", user.Role);
                     }
                     else
                     {
-                        var UserData = new UserModel
-                        {
-                            UserName = user.UserName,
-                            Password = user.Password,
-                            Email = user.Email,
-                            Role = user.Role,
-                            IsActive = true,
-                        };
-                        var json = JsonConvert.SerializeObject(UserData);
-                        var content = new StringContent(json,Encoding.UTF8, "application/json");
+                        user.IsActive = true;
+                        json = JsonConvert.SerializeObject(user);
+                        content = new StringContent(json,Encoding.UTF8, "application/json");
                         res = await _httpClient.PutAsync($"User/UpdateUser/{user.UserId}",content);
                         if (res != null && res.IsSuccessStatusCode)
                         {
                             HttpContext.Session.SetString("UserId", user.UserId.ToString());
                             HttpContext.Session.SetString("UserName", user.UserName);
                             HttpContext.Session.SetString("Email", user.Email);
+                            HttpContext.Session.SetString("Role", user.Role);
                         }
+                    }
+                    if(user.Role == "Admin")
+                    {
+                        return RedirectToAction("Index", "Home", new { area = "Admin" });
                     }
                     return RedirectToAction("MyProfile");
                 }
@@ -141,14 +129,13 @@ namespace ES_FrontEnd.Controllers
                 {
                     var data = await res.Content.ReadAsStringAsync();
                     var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    ViewBag.Message = "Error";
-                    ViewBag.Result = result.message;
+                    TempData["message"] = result.message;
                     return View("Login");
                 }
             }
             else
             {
-                ViewBag.Message = "Failed";
+                TempData["message"] = "Please Fill All Field in the Form";
                 return View("Login");
             }
         }

@@ -1,7 +1,146 @@
-﻿<div class="container">
+﻿@model CustomerModel
+<div class="container">
     <div class="col-md-12 section-t8">
-<h1>
-    hello
-</h1>
+        <div class="card p-3">
+            <div class="card-header display-5">
+                Hello,<span class="color-b">@CommonVariable.UserName()</span>
+            </div>
+            <form method="post">
+                <input asp-for="CustomerId" id="CustomerId" type="hidden" />
+                <table class="table table-striped table-hover fs-4">
+                    <tr>
+                        <td>Customer Name</td>
+                        <td class="data" id="dname"></td>
+                        <td><input asp-for="FirstName" id="CustomerName" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="FirstName LastName" /></td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>@CommonVariable.Email()</td>
+                    </tr>
+                    <tr>
+                        <td>MobileNo</td>
+                        <td class="data" id="dMobileNo"></td>
+                        <td><input asp-for="MobileNo" id="MobileNo" type="text" class="form-control form-control-lg form-control-a input-h" maxlength="10" placeholder="MobileNo" /></td>
+                    </tr>
+                    <tr>
+                        <td>Address</td>
+                        <td class="data" id="dAddress"></td>
+                        <td><input asp-for="Address" id="Address" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="Address" /></td>
+                    </tr>
+                    <tr id="btn-save">
+                        <td><button id="SaveCustomer" type="button" class="btn btn-primary">Save</button></td>
+                        <td><button id="Cancel" type="button" class="btn btn-primary">Cancel</button></td>
+                    </tr>
+                </table>
+            </form>
+            <div class="card-body">
+                <a id="Edit" href="#" class="card-link">Edit Profile</a>
+                <a id="Change" href="#" class="card-link">Change Password</a>
+                <a id="Delete" href="#" class="card-link">Delete Account</a>
+                <a asp-controller="User" asp-action="Logout" class="card-link">Logout</a>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        var apidata = {};
+        var id = @CommonVariable.UserId();
+        $(".input-h").hide();
+        $("#btn-save").hide();
+
+        fetchData();
+        
+        $("#Edit").click(()=>{
+            editData();
+        });
+
+        $("#SaveCustomer").click(()=>{
+            saveCustomerData(id);
+        });
+
+        $("#Cancel").click(()=>{
+            $(".input-h").hide();
+            $("#btn-save").hide();
+            $(".data").show();
+        });
+
+        $("#Change").click(()=>{
+            console.log("clicked")
+        });
+
+        $("#Delete").click(()=>{
+            console.log("clicked")
+        });
+    });
+
+    function fetchData(){
+        $.ajax({
+        type:"GET",
+        url:"Customer/getCustomer",
+        success:function(data){
+            if(data.message == "Not Found"){
+                editData();
+            }
+            apidata = data;
+            document.getElementById("dname").innerText = data.firstName+" "+data.lastName;
+            document.getElementById("dMobileNo").innerText = data.mobileNo;
+            document.getElementById("dAddress").innerText = data.address;
+            }
+        });
+    }
+
+    function editData(){
+        $(".data").hide();
+        $(".input-h").show();
+        $("#btn-save").show();
+        if(apidata.message != "Not Found"){
+            document.getElementById("CustomerId").value = apidata.customerId;
+            document.getElementById("CustomerName").value = apidata.firstName + " " + apidata.lastName;
+            document.getElementById("MobileNo").value = apidata.mobileNo;
+            document.getElementById("Address").value = apidata.address;
+        }
+    }
+
+    function saveCustomerData(id){
+        var name = $("#CustomerName").val();
+        var arr = name.split(" ");
+        var CustomerData = {
+            "CustomerId":$("#CustomerId").val(),
+            "FirstName": arr[0],
+            "LastName": arr[1],
+            "MobileNo": $("#MobileNo").val(),
+            "Address":$("#Address").val(),
+            "UserId":id
+        };
+        $.ajax({
+            type:"POST",
+            url:"Customer/SaveCustomer",
+            data:CustomerData,
+            success:function(data){
+                swal(data.message, {
+                    buttons: {
+                        confirm: {
+                            className: "btn btn-success",
+                        },
+                    },
+                }).then((ok)=>{
+                    if(ok){
+                        $(".data").show();
+                        $(".input-h").hide();
+                        $("#btn-save").hide();
+                        fetchData();
+                    }
+                });
+            },
+        });
+    }
+</script>
+<link rel="stylesheet" href="~/css/plugins.min.css" />
+<script src="~/js/plugin/sweetalert/sweetalert.min.js"></script>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
