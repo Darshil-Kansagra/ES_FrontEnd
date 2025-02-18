@@ -1,4 +1,4 @@
-﻿    <!-- ======= Intro Single ======= -->
+﻿<!-- ======= Intro Single ======= -->
 <section class="intro-single">
     <div class="container">
         <div class="row">
@@ -165,16 +165,26 @@
                         </div>
                         <div class="amenities-list color-text-a">
                             <ul class="list-a no-margin">
-                                <li>Balcony</li>
-                                <li>Outdoor Kitchen</li>
-                                <li>Cable Tv</li>
-                                <li>Deck</li>
-                                <li>Tennis Courts</li>
-                                <li>Internet</li>
-                                <li>Parking</li>
-                                <li>Sun Room</li>
-                                <li>Concrete Flooring</li>
+                                @if (ViewBag.Product.StockQuantity == 0)
+                                {
+                                    <li><strong class="text-danger">Out of Stock</strong></li>
+                                }
+                                else
+                                {
+                                    <li><strong class="text-success">InStock</strong></li>
+                                }
                             </ul>
+                            <div class="col-12">
+                                <form asp-controller="Order" asp-action="Checkout" method="post">
+                                    <input type="hidden" name="id" value="@ViewBag.Product.ProductId" />
+                                    <div class="col-md-12 mb-3">
+                                        <div class="form-group">
+                                            <input type="number" class="form-control form-select-sm form-control-a" name="Quantity" min="1" value="1" max="@ViewBag.Product.StockQuantity" placeholder="Quantity" />
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-a">Buy Now</button>
+                                </form> 
+                            </div>
                         </div>
                     </div>
                 </div>

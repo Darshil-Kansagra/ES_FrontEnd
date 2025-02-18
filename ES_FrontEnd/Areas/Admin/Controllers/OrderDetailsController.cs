@@ -140,24 +140,5 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
             }
         }
         #endregion
-
-        #region GetUserDropDown
-        [HttpGet]
-        [Route("/UserDropDown")]
-        public async Task<JsonResult> GetUserDropDown()
-        {
-            HttpResponseMessage res = null;
-            res = await _httpClient.GetAsync("User/GetAllUser");
-            if (res != null && res.IsSuccessStatusCode)
-            {
-                var content = await res.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<UserDropDown>>(content);
-                Console.WriteLine(data);
-                ViewBag.UserList = data;
-                return Json(data);
-            }
-            return Json(null);
-        }
-        #endregion
     }
 }

@@ -24,6 +24,8 @@
                             <th>Email</th>
                             <th>Role</th>
                             <th>IsActive</th>
+                            <th>CreatedDate</th>
+                            <th>UpdatedDate</th>
                             <th style="width: 10%">Action</th>
                         </tr>
                     </thead>
@@ -36,6 +38,8 @@
                                 <td>@data.Email</td>
                                 <td>@data.Role</td>
                                 <td>@data.IsActive</td>
+                                <td>@data.CreatedDate</td>
+                                <td>@data.UpdatedDate</td>
                                 <td>
                                     <div class="form-button-action">
                                             <a asp-area="Admin" asp-controller="User" asp-action="Insert" asp-route-id="@data.UserId">
