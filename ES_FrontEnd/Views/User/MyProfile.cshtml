@@ -11,7 +11,9 @@
                     <tr>
                         <td>Customer Name</td>
                         <td class="data" id="dname"></td>
-                        <td><input asp-for="FirstName" id="CustomerName" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="FirstName LastName" /></td>
+                        <td><input asp-for="FirstName" id="CustomerName" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="FirstName LastName" />
+                            <span id="validname" class="text-danger"></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Email</td>
@@ -20,12 +22,16 @@
                     <tr>
                         <td>MobileNo</td>
                         <td class="data" id="dMobileNo"></td>
-                        <td><input asp-for="MobileNo" id="MobileNo" type="text" class="form-control form-control-lg form-control-a input-h" maxlength="10" placeholder="MobileNo" /></td>
+                        <td><input asp-for="MobileNo" id="MobileNo" type="text" class="form-control form-control-lg form-control-a input-h" maxlength="10" placeholder="MobileNo" />
+                            <span id="validmobile" class="text-danger"></span>
+                        </td>
                     </tr>
                     <tr>
                         <td>Address</td>
                         <td class="data" id="dAddress"></td>
-                        <td><input asp-for="Address" id="Address" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="Address" /></td>
+                        <td><input asp-for="Address" id="Address" type="text" class="form-control form-control-lg form-control-a input-h" placeholder="Address" />
+                            <span id="validaddress" class="text-danger"></span>
+                        </td>
                     </tr>
                     <tr id="btn-save">
                         <td><button id="SaveCustomer" type="button" class="btn btn-primary">Save</button></td>
@@ -35,7 +41,6 @@
             </form>
             <div class="card-body">
                 <a id="Edit" href="#" class="card-link">Edit Profile</a>
-                <a id="Change" href="#" class="card-link">Change Password</a>
                 <a id="Delete" href="#" class="card-link">Delete Account</a>
                 <a asp-controller="User" asp-action="Logout" class="card-link">Logout</a>
             </div>
@@ -57,17 +62,17 @@
         });
 
         $("#SaveCustomer").click(()=>{
-            saveCustomerData(id);
+            let flag = checkValidation();
+            if(flag == true){
+                saveCustomerData(id);
+            }
         });
 
         $("#Cancel").click(()=>{
             $(".input-h").hide();
             $("#btn-save").hide();
             $(".data").show();
-        });
-
-        $("#Change").click(()=>{
-            console.log("clicked")
+            $("span").hide();
         });
 
         $("#Delete").click(()=>{
@@ -101,6 +106,36 @@
             document.getElementById("MobileNo").value = apidata.mobileNo;
             document.getElementById("Address").value = apidata.address;
         }
+    }
+
+    function checkValidation(){
+        var isValid = true;
+        var name = $("#CustomerName").val();
+        var mobile = $("#MobileNo").val();
+        var address = $("#Address").val();
+
+        if(name.trim() === ""){
+            $("#validname").text("Name is required.");
+            isValid = false;
+        } else {
+            $("#validname").text("");
+        }
+
+        if(mobile.trim() === "" || !/^\d{10}$/.test(mobile)){
+            $("#validmobile").text("Valid mobile number is required.");
+            isValid = false;
+        } else {
+            $("#validmobile").text("");
+        }
+
+        if(address.trim() === ""){
+            $("#validaddress").text("Address is required.");
+            isValid = false;
+        } else {
+            $("#validaddress").text("");
+        }
+
+        return isValid;
     }
 
     function saveCustomerData(id){

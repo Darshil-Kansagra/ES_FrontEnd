@@ -41,9 +41,10 @@
                                     <td>@data.UpdatedDate</td>
                                     <td>
                                         <div class="form-button-action">
-                                            <a asp-area="Admin" asp-controller="Product" asp-action="ViewProduct" asp-route-id="@data.ProductId">
-                                                <button class="btn btn-info me-2">View</button>
-                                            </a>
+                                            <form asp-area="Admin" asp-controller="Product" asp-action="ViewProduct" method="post">
+                                                <input type="hidden" name="id" value="@data.ProductId" />
+                                                <button type="submit" class="btn btn-info me-2">View</button>
+                                            </form>
                                             <a asp-area="Admin" asp-controller="Product" asp-action="Insert" asp-route-id="@data.ProductId">
                                                 <button class="btn btn-secondary me-2">Edit</button>
                                             </a>
@@ -96,7 +97,7 @@
         if (willDelete) {
           $.ajax({
               type:"DELETE",
-              url:`/ProductDelete/${id}`,
+              url:`/DeleteProduct/${id}`,
               success:function(data){
                 swal(data.message, {
                 icon: "success",

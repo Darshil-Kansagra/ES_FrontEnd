@@ -5,7 +5,8 @@
             <div class="col-md-12 col-lg-8">
                 <div class="title-single-box">
                     <h1 class="title-single">@ViewBag.Product.ProductName</h1>
-                    <span class="color-text-a">@ViewBag.Product.ProductType</span>
+                    <span class="color-text-a" id="ptype">@ViewBag.Product.ProductType</span>
+                    <input type="hidden" id="ProductId" value="@ViewBag.Product.ProductId" />
                 </div>
             </div>
         </div>
@@ -49,94 +50,93 @@
                                     </div>
                                 </div>
                             </div>
-                            @if (@ViewBag.Product.ProductType == "AC")
+                            @if (ViewBag.Product.ProductType == "TV")
                             {
                                 <div class="summary-list">
                                     <ul class="list">
                                         <li class="d-flex justify-content-between">
                                             <strong>ModelNumber:</strong>
-                                            <span>1134</span>
+                                            <span id="dataModel"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Brand:</strong>
-                                            <span>Chicago, IL 606543</span>
+                                            <span id="dataBrand"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>Capacity:</strong>
-                                            <span>House</span>
+                                            <strong>Sizes:</strong>
+                                            <span id="dataSizes"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>Refrigerant:</strong>
-                                            <span>Sale</span>
+                                            <strong>Resolution:</strong>
+                                            <span id="dataResolution"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>Voltage:</strong>
-                                            <span>
-                                                340m
-                                                <sup>2</sup>
-                                            </span>
+                                            <strong>HDTechnology:</strong>
+                                            <span id="dataHDTechnology"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>Color:</strong>
-                                            <span>4</span>
+                                            <strong>RefreshRate:</strong>
+                                            <span id="dataRefreshRate"></span>
+                                        </li>
+                                        <li class="d-flex justify-content-between">
+                                            <strong>SoundTechnology:</strong>
+                                            <span id="dataSoundTechnology"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Warranty:</strong>
-                                            <span>2</span>
+                                            <span id="dataWar"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>StarRating:</strong>
-                                            <span>1</span>
+                                            <span id="dataStar"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>BrochureUrl:</strong>
-                                            <span>1</span>
+                                            <strong>Brochure:</strong>
+                                            <a id="dataBro" href="" target="_blank">BrochurePDF</a>
                                         </li>
                                     </ul>
                                 </div>
                             }
-                            else if (@ViewBag.Product.ProductType == "TV")
+                            else if (ViewBag.Product.ProductType == "AC")
                             {
                                 <div class="summary-list">
                                     <ul class="list">
                                         <li class="d-flex justify-content-between">
                                             <strong>ModelNumber:</strong>
-                                            <span>1134</span>
+                                            <span id="dataModel"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Brand:</strong>
-                                            <span>Chicago, IL 606543</span>
+                                            <span id="dataBrand"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Capacity:</strong>
-                                            <span>House</span>
+                                            <span id="dataCap"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Refrigerant:</strong>
-                                            <span>Sale</span>
+                                            <span id="dataRef"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Voltage:</strong>
-                                            <span>
-                                                340m
-                                                <sup>2</sup>
+                                            <span id="dataVol">
                                             </span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Color:</strong>
-                                            <span>4</span>
+                                            <span id="dataCol"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>Warranty:</strong>
-                                            <span>2</span>
+                                            <span id="dataWar"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
                                             <strong>StarRating:</strong>
-                                            <span>1</span>
+                                            <span id="dataStar"></span>
                                         </li>
                                         <li class="d-flex justify-content-between">
-                                            <strong>BrochureUrl:</strong>
-                                            <span>1</span>
+                                            <strong>Brochure:</strong>
+                                            <a id="dataBro" href="" target="_blank">BrochurePDF</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -192,3 +192,50 @@
         </div>
     </div>
 </section><!-- End Property Single-->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(()=>{
+        fetchSpecification();
+    });
+        function fetchSpecification(){
+        let pid = $("#ProductId").val();
+        let ptype = document.getElementById("ptype").innerText;
+
+        if(ptype == "AC"){
+            $.ajax({
+            type:"GET",
+            url:`/GetSpecificationAC/${pid}`,
+            success:function(data){
+                document.getElementById("dataModel").innerText = data.modelNumber;
+                document.getElementById("dataBrand").innerText = data.brand;
+                document.getElementById("dataCap").innerText = data.capacity + " Ton";
+                document.getElementById("dataRef").innerText = data.refrigerant;
+                document.getElementById("dataVol").innerText = data.voltage;
+                document.getElementById("dataCol").innerText = data.color;
+                document.getElementById("dataWar").innerText = data.warranty + " Year";
+                document.getElementById("dataStar").innerText = data.starRating + " Star";
+                document.getElementById("dataBro").href = "https://localhost:44331/"+ data.brochureUrl;
+            }
+        });
+        }
+        else if(value=="TV"){
+            $.ajax({
+            type:"GET",
+            url:`/GetSpecificationTV/${pid}`,
+            success:function(data){
+                document.getElementById("dataModel").innerText = data.modelNumber;
+                document.getElementById("dataBrand").innerText = data.brand;
+                document.getElementById("dataSizes").innerText = data.sizes + " Inch";
+                document.getElementById("dataResolution").innerText = data.resolution;
+                document.getElementById("dataHDTechnology").innerText = data.hDtechnology;
+                document.getElementById("dataRefreshRate").innerText = data.refreshRate + " Hz";
+                document.getElementById("dataSoundTechnology").innerText = data.soundTechnology;
+                document.getElementById("dataWar").innerText = data.warranty + " Year";
+                document.getElementById("dataStar").innerText = data.starRating + " Star";
+                document.getElementById("dataBro").href = "https://localhost:44331/"+ data.brochureUrl;
+
+            }
+        });
+        }
+    }
+</script>

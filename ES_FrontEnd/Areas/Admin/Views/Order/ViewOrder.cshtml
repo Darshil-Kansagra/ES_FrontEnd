@@ -1,0 +1,96 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout_Admin.cshtml";
+}
+@using ES_FrontEnd;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">OrderDetails Table</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">ProductName</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">TotalAmount</th>
+                        <th scope="col">UserName</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var od in ViewBag.OrderDetail)
+                    {
+                        <tr>
+                            <td>@od.ProductName</td>
+                            <td>@od.Quantity</td>
+                            <td>@od.Amount</td>
+                            <td>@od.TotalAmount</td>
+                            <td>@od.UserName</td>
+                        </tr>
+                        <input type="hidden" id="Amount" value="@od.Amount" />
+                        <input type="hidden" id="TotalAmount" value="@od.TotalAmount" />
+                        <input type="hidden" id="OrderId" value="@od.OrderId" />
+                        <input type="hidden" id="UserId" value="@CommonVariable.UserId()" />
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <button class="btn btn-primary mb-5" onclick="GenrateBill()">GenrateBill</button>
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Bills Table</div>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">BillNumber</th>
+                        <th scope="col">BillDate</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Discount</th>
+                        <th scope="col">TotalAmount</th>
+                        <th scope="col">UserName</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var bd in ViewBag.Bills)
+                    {
+                        <tr>
+                            <td>@bd.BillNumber</td>
+                            <td>@bd.BillDate</td>
+                            <td>@bd.Amount</td>
+                            <td>@bd.Discount</td>
+                            <td>@bd.TotalAmount</td>
+                            <td>@bd.UserName</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function GenrateBill(){
+        var id = $("#OrderId").val();
+        console.log(id);
+        $.ajax({
+            type:"POST",
+            url:"/SaveBills",
+            data:{
+                "Amount":$("#Amount").val(),
+                "Discount":1,
+                "TotalAmount":$("#TotalAmount").val(),
+                "OrderId":$("#OrderId").val(),
+                "UserId":$("#UserId").val()
+            },
+            success:function(data){
+                console.log(data);
+                // window.location.reload();
+            }
+        });
+    }
+</script>

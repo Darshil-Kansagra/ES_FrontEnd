@@ -47,94 +47,93 @@
                                         </div>
                                     </div>
                                 </div>
-                                @if(Model.ProductType=="AC")
+                                @if(Model.ProductType=="TV")
                                 {
                                     <div class="summary-list">
                                         <ul class="list">
                                             <li class="d-flex justify-content-between">
                                                 <strong>ModelNumber:</strong>
-                                                <span>1134</span>
+                                                <span id="dataModel"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Brand:</strong>
-                                                <span>Chicago, IL 606543</span>
+                                                <span id="dataBrand"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>Capacity:</strong>
-                                                <span>House</span>
+                                                <strong>Sizes:</strong>
+                                                <span id="dataSizes"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>Refrigerant:</strong>
-                                                <span>Sale</span>
+                                                <strong>Resolution:</strong>
+                                                <span id="dataResolution"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>Voltage:</strong>
-                                                <span>
-                                                    340m
-                                                    <sup>2</sup>
-                                                </span>
+                                                <strong>HDTechnology:</strong>
+                                                <span id="dataHDTechnology"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>Color:</strong>
-                                                <span>4</span>
+                                                <strong>RefreshRate:</strong>
+                                                <span id="dataRefreshRate"></span>
+                                            </li>
+                                            <li class="d-flex justify-content-between">
+                                                <strong>SoundTechnology:</strong>
+                                                <span id="dataSoundTechnology"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Warranty:</strong>
-                                                <span>2</span>
+                                                <span id="dataWar"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>StarRating:</strong>
-                                                <span>1</span>
+                                                <span id="dataStar"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>BrochureUrl:</strong>
-                                                <span>1</span>
+                                                <strong>Brochure:</strong>
+                                                <a id="dataBro" href="" target="_blank">BrochurePDF</a>
                                             </li>
                                         </ul>
                                     </div>
                                 }
-                                else if(Model.ProductType=="TV")
+                                else if(Model.ProductType=="AC")
                                 {
                                     <div class="summary-list">
                                         <ul class="list">
                                             <li class="d-flex justify-content-between">
                                                 <strong>ModelNumber:</strong>
-                                                <span>1134</span>
+                                                <span id="dataModel"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Brand:</strong>
-                                                <span>Chicago, IL 606543</span>
+                                                <span id="dataBrand"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Capacity:</strong>
-                                                <span>House</span>
+                                                <span id="dataCap"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Refrigerant:</strong>
-                                                <span>Sale</span>
+                                                <span id="dataRef"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Voltage:</strong>
-                                                <span>
-                                                    340m
-                                                    <sup>2</sup>
+                                                <span id="dataVol">
                                                 </span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Color:</strong>
-                                                <span>4</span>
+                                                <span id="dataCol"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>Warranty:</strong>
-                                                <span>2</span>
+                                                <span id="dataWar"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
                                                 <strong>StarRating:</strong>
-                                                <span>1</span>
+                                                <span id="dataStar"></span>
                                             </li>
                                             <li class="d-flex justify-content-between">
-                                                <strong>BrochureUrl:</strong>
-                                                <span>1</span>
+                                                <strong>Brochure:</strong>
+                                                <a id="dataBro" href="" target="_blank">BrochurePDF</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -159,15 +158,65 @@
                 </div>
             <div class="col-sm-12">
                 <button class="btn btn-success" id="btntoggle" onclick="toggleView()">Change Specification</button>
-                <form>
+                <div id="add-form">
+                    <form asp-action="AddSpecification" enctype="multipart/form-data" asp-controller="Specification" asp-area="Admin" method="post">
+                            <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        <input type="hidden" name="type" value="@Model.ProductType" />
+                        <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">ModelNumber</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="ModelNumber" required>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Brand</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="Brand" required>
+                            </div>
+                        </div>
                     <div id="TV">
                         <partial name="_TVview" />
                     </div>
                     <div id="AC">
                         <partial name="_ACview" />
                     </div>
-                        <button class="btn btn-success" id="btnsave" onclick="SaveSpecification()">Save Specification</button>
+                        <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Warranty</label>
+                            <div class="col-sm-10">
+                                <select class="form-control form-select form-control-a" name="Warranty">
+                                    <option value="none">Select Warranty</option>
+                                    <option value="1">1 Year</option>
+                                    <option value="2">2 Year</option>
+                                    <option value="3">3 Year</option>
+                                    <option value="4">4 Year</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">StarRating</label>
+                            <div class="col-sm-10">
+                                <select class="form-control form-select form-control-a" name="StarRating">
+                                    <option value="none">Select Star Rating</option>
+                                    <option value="1">1 Star</option>
+                                    <option value="2">2 Star</option>
+                                    <option value="3">3 Star</option>
+                                    <option value="4">4 Star</option>
+                                    <option value="5">5 Star</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">BrochureUrl</label>
+                            <div class="col-sm-10">
+                                <input type="file" class="form-control" name="BUrl" required>
+                            </div>
+                        </div>
+                        <button class="btn btn-success" id="btnsave" type="submit">Save Specification</button>
                 </form>
+                </div>
             </div>
         </div>
     </section>
@@ -189,9 +238,11 @@ else{
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(()=>{
+        $("#add-form").hide();
         $("#TV").hide();
         $("#AC").hide();
         $("#btnsave").hide();
+        fetchSpecification();
     });
     function toggleView(){
         var btntoggle = document.getElementById("btntoggle");
@@ -203,10 +254,12 @@ else{
 
             var value = document.getElementById("ptype").innerText;
             if(value=="TV"){
+                $("#add-form").show();
                 $("#TV").show();
                 $("#btnsave").show();
             }
             else if(value=="AC"){
+                $("#add-form").show();
                 $("#AC").show();
                 $("#btnsave").show();
             }
@@ -218,56 +271,49 @@ else{
             $("#TV").hide();
             $("#AC").hide();
             $("#btnsave").hide();
+            $("#add-form").hide();
         }
     }
-    function SaveSpecification(){
-            console.log("save");
-            var value = document.getElementById("ptype").innerText;
-            var SpecificationData = {};
-            if(value=="TV"){
-                SpecificationData = {
-                    ModelNumber:$("#ModelNumber").val(),
-                    Brand:$("#Brand").val(),
-                    Sizes:$("#Sizes").val(),
-                    Resolution:$("#Resolution").val(),
-                    HDTechnology:$("#HDTechnology").val(),
-                    RefreshRate:$("#RefreshRate").val(),
-                    SoundTechnology:$("#SoundTechnology").val(),
-                    Warranty:$("#Warranty").val(),
-                    StarRating:$("#StarRating").val(),
-                    BUrl:$("#BUrl"),
-                    ProductId:$("#ProductId").val()
-                }
-                $.ajax({
-                    type:"POST",
-                    url:"/Admin/Specification/SaveSpecificationTV",
-                    data:SpecificationData,
-                    success:function(data){
-                        alert(data);
-                    }
-                })
+    function fetchSpecification(){
+        let pid = $("#ProductId").val();
+        let ptype = document.getElementById("ptype").innerText;
+
+        if(ptype == "AC"){
+            $.ajax({
+            type:"GET",
+            url:`/GetSpecificationAC/${pid}`,
+            success:function(data){
+                console.log(data);
+                document.getElementById("dataModel").innerText = data.modelNumber;
+                document.getElementById("dataBrand").innerText = data.brand;
+                document.getElementById("dataCap").innerText = data.capacity + " Ton";
+                document.getElementById("dataRef").innerText = data.refrigerant;
+                document.getElementById("dataVol").innerText = data.voltage;
+                document.getElementById("dataCol").innerText = data.color;
+                document.getElementById("dataWar").innerText = data.warranty + " Year";
+                document.getElementById("dataStar").innerText = data.starRating + " Star";
+                document.getElementById("dataBro").href = "https://localhost:44331/"+ data.brochureUrl;
             }
-            else if(value=="AC"){
-                SpecificationData = {
-                    ModelNumber:$("#ModelNumber").val(),
-                    Brand:$("#Brand").val(),
-                    Capacity:$("#Capacity").val(),
-                    Refrigerant:$("#Refrigerant").val(),
-                    Voltage:$("#Voltage").val(),
-                    Color:$("#Color").val(),
-                    Warranty:$("#Warranty").val(),
-                    StarRating:$("#StarRating").val(),
-                    BUrl:$("#BUrl"),
-                    ProductId:$("#ProductId").val()
-                }
-                $.ajax({
-                    type:"POST",
-                    url:"/Admin/Specification/SaveSpecificationAC",
-                    data:SpecificationData,
-                    success:function(data){
-                        alert(data);
-                    }
-                })
-            }
+        });
         }
+        else if(value=="TV"){
+            $.ajax({
+            type:"GET",
+            url:`/GetSpecificationTV/${pid}`,
+            success:function(data){
+                document.getElementById("dataModel").innerText = data.modelNumber;
+                document.getElementById("dataBrand").innerText = data.brand;
+                document.getElementById("dataSizes").innerText = data.sizes + " Inch";
+                document.getElementById("dataResolution").innerText = data.resolution;
+                document.getElementById("dataHDTechnology").innerText = data.hDtechnology;
+                document.getElementById("dataRefreshRate").innerText = data.refreshRate + " Hz";
+                document.getElementById("dataSoundTechnology").innerText = data.soundTechnology;
+                document.getElementById("dataWar").innerText = data.warranty + " Year";
+                document.getElementById("dataStar").innerText = data.starRating + " Star";
+                document.getElementById("dataBro").href = "https://localhost:44331/"+ data.brochureUrl;
+
+            }
+        });
+        }
+    }
 </script>

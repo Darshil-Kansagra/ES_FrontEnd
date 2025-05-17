@@ -68,6 +68,34 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Delete Product
+        [HttpDelete("/DeleteProduct/{id}")]
+        public async Task<JsonResult> DeleteProduct(int id)
+        {
+            HttpResponseMessage res = null;
+            try
+            {
+                res = await _httpClient.DeleteAsync($"Product/DeleteProduct/{id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            if (res != null && res.IsSuccessStatusCode)
+            {
+                var content = await res.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<dynamic>(content);
+                return Json(new { message = Convert.ToString(result.message) });
+            }
+            else
+            {
+                var content = await res.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<dynamic>(content);
+                return Json(new { message = Convert.ToString(result.message) });
+            }
+        }
+        #endregion
+
         #region Save
         [HttpPost]
         public async Task<IActionResult> Save(ProductModel product,IFormFile image)
@@ -84,17 +112,6 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
                 string url = "Uploads/"+ image.FileName;
                 product.ImageUrl = url;
             }
-            //if (BUrl != null)
-            //{
-            //    var path = Path.Combine(wwwrootDirBro, BUrl.FileName);
-
-            //    using (var stream = new FileStream(path, FileMode.Create))
-            //    {
-            //        await BUrl.CopyToAsync(stream);
-            //    }
-            //    string url = "doc/" + BUrl.FileName;
-            //    specification.BrochureUrl = url;
-            //}
             var json = JsonConvert.SerializeObject(product);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             HttpResponseMessage res;
@@ -130,6 +147,7 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
 
         #region ViewProduct
         [Route("ViewProduct")]
+        [HttpPost]
         public async Task<IActionResult> ViewProduct(int id)
         {
             HttpResponseMessage res = null;

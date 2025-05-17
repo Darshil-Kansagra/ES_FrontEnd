@@ -2,7 +2,7 @@
 {
     public class SpecificationModel
     {
-        public int SpecificationId { get; set; }
+        public int? SpecificationId { get; set; }
         public string ModelNumber { get; set; }
         public string Brand { get; set; }
         public int? Sizes { get; set; }
@@ -15,7 +15,7 @@
         public int? Voltage { get; set; }
         public string? Color { get; set; }
         public int? Warranty { get; set; }
-        public double? StarRating { get; set; }
+        public int? StarRating { get; set; }
         public string BrochureUrl { get; set; }
         public int ProductId { get; set; }
         public DateTime? CreatedDate { get; set; }

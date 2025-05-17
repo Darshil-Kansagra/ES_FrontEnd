@@ -3,11 +3,12 @@ using Newtonsoft.Json;
 using ES_FrontEnd.Areas.Admin.Models;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ES_FrontEnd.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    [Route("Admin/[controller]")]
+    [Route("Admin/[controller]/[action]")]
     [CheckAccess]
     public class OrderController : Controller
     {
@@ -77,68 +78,32 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Order Insert
-        [Route("Insert")]
-        public async Task<IActionResult> Insert(int? id)
+        #region ViewOrder
+        [HttpGet("{id}")]
+        public async Task<IActionResult> ViewOrder(int id)
         {
-            if (id.HasValue)
-            {
-                var res = await _httpClient.GetAsync($"Order/GetById/{id}");
-                if (res.IsSuccessStatusCode)
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<OrderModel>(data);
-                    return View(result);
-                }
-            }
-            return View("Insert");
+            OrderDetailsController od = new OrderDetailsController(_httpClient);
+            List<OrderDetailsModel> odm = new List<OrderDetailsModel>();
+            odm = await od.GetAllOrderDetails(id);
+            ViewBag.OrderDetail = odm;
+
+            BillController bc = new BillController(_httpClient);
+            List<BillModel> bm = new List<BillModel>();
+            bm = await bc.GetAllBill(id);
+            ViewBag.Bills = bm;
+            return View("ViewOrder");
         }
         #endregion
 
-        #region Save
+        #region SaveBills
         [HttpPost]
-        public async Task<IActionResult> Save(OrderModel Order)
+        [Route("/SaveBills")]
+        [Microsoft.AspNetCore.Authorization.AllowAnonymous] // Add this attribute to bypass CheckAccess
+        public async Task<bool> SaveBills(BillModel Bill)
         {
-            if (ModelState.IsValid)
-            {
-                var json = JsonConvert.SerializeObject(Order);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage res;
-                if (Order.OrderId == null)
-                {
-                    res = await _httpClient.PostAsync("Order/PostOrder", content);
-                }
-                else
-                {
-                    res = await _httpClient.PutAsync($"Order/PutOrder/{Order.OrderId}", content);
-                }
-                if (res.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                else if (res.StatusCode == HttpStatusCode.BadRequest)
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    Console.WriteLine(result);
-                    TempData["message"] = "Please Fill All Field in the Form";
-                    return RedirectToAction("Insert", "Order");
-                }
-                else
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    TempData["message"] = result.message;
-                    return RedirectToAction("Insert", "Order");
-                }
-            }
-            else
-            {
-                TempData["message"] = "Please Fill All Field in the Form";
-                return RedirectToAction("Insert", "Order");
-            }
+            BillController bc = new BillController(_httpClient);
+            return await bc.Save(Bill);
         }
         #endregion
-
     }
 }

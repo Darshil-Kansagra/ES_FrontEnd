@@ -8,26 +8,25 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Route("Admin/[controller]")]
-    [CheckAccess]
     public class BillController : Controller
     {
         private HttpClient _httpClient;
 
         #region configuration
-        public BillController(IConfiguration configuration)
+        public BillController(HttpClient http)
         {
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new System.Uri(configuration["ApiBaseUrl"]);
+            _httpClient = http;
         }
         #endregion
 
         #region GetAllBill
-        public async Task<IActionResult> Index()
+        public async Task<List<BillModel>> GetAllBill(int id)
         {
             HttpResponseMessage res = null;
+            List<BillModel> data = new List<BillModel>();
             try
             {
-                res = await _httpClient.GetAsync("Bill/GetAllBill");
+                res = await _httpClient.GetAsync($"Bill/GetAllBill/{id}");
             }
             catch (Exception ex)
             {
@@ -36,16 +35,9 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
             if (res != null && res.IsSuccessStatusCode)
             {
                 var content = await res.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<List<BillModel>>(content);
-                return View("BillList", data);
+                data = JsonConvert.DeserializeObject<List<BillModel>>(content);
             }
-            else
-            {
-                var content = await res.Content.ReadAsStringAsync();
-                var data = JsonConvert.DeserializeObject<dynamic>(content);
-                TempData["message"] = data.message;
-                return View("BillList");
-            }
+            return data;
         }
         #endregion
 
@@ -77,65 +69,21 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Bill Insert
-        [Route("Insert")]
-        public async Task<IActionResult> Insert(int? id)
-        {
-            if (id.HasValue)
-            {
-                var res = await _httpClient.GetAsync($"Bill/GetById/{id}");
-                if (res.IsSuccessStatusCode)
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<BillModel>(data);
-                    return View(result);
-                }
-            }
-            return View("Insert");
-        }
-        #endregion
-
         #region Save
         [HttpPost]
-        public async Task<IActionResult> Save(BillModel Bill)
+        public async Task<bool> Save(BillModel Bill)
         {
-            if (ModelState.IsValid)
+            HttpResponseMessage res;
+            var json = JsonConvert.SerializeObject(Bill);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            res = await _httpClient.PostAsync("Bill/PostBill", content);
+            if (res.IsSuccessStatusCode)
             {
-                var json = JsonConvert.SerializeObject(Bill);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-                HttpResponseMessage res;
-                if (Bill.BillId == null)
-                {
-                    res = await _httpClient.PostAsync("Bill/PostBill", content);
-                }
-                else
-                {
-                    res = await _httpClient.PutAsync($"Bill/PutBill/{Bill.BillId}", content);
-                }
-                if (res.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                else if (res.StatusCode == HttpStatusCode.BadRequest)
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    Console.WriteLine(result);
-                    TempData["message"] = "Please Fill All Field in the Form";
-                    return RedirectToAction("Insert", "Bill");
-                }
-                else
-                {
-                    var data = await res.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<dynamic>(data);
-                    TempData["message"] = result.message;
-                    return RedirectToAction("Insert", "Bill");
-                }
+                return true;
             }
             else
             {
-                TempData["message"] = "Please Fill All Field in the Form";
-                return RedirectToAction("Insert", "Bill");
+                return false;
             }
         }
         #endregion

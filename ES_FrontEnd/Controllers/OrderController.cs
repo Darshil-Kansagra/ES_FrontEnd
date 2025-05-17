@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ES_FrontEnd.Controllers
 {
@@ -45,8 +46,15 @@ namespace ES_FrontEnd.Controllers
         #endregion
 
         #region ViewPage
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            List<OrderModel> orders = new List<OrderModel>();
+            orders = await GetOrderbyUserId();
+            foreach(var data in orders)
+            {
+                Console.WriteLine(data.OrderId);
+            }
+            ViewBag.Orders = orders;
             return View("OrderPage");
         }
         #endregion
@@ -108,21 +116,11 @@ namespace ES_FrontEnd.Controllers
                 }; 
                 OrderDetailsController od1 = new OrderDetailsController(_httpClient);
                 flag = await od1.SaveOrderDetails(odm);
-
                 if(flag == true)
                 {
-                    BillModel bm = new BillModel()
-                    {
-                        Amount = model.Price,
-                        Discount = Convert.ToInt32(fc["Discount"]),
-                        TotalAmount = (model.Price * Convert.ToInt32(fc["Quantity"])),
-                        OrderId = values[0].OrderId ?? 0,
-                        UserId = model.UserId
-                    };
-                    BillController bc1 = new BillController(_httpClient);
-                    flag = await bc1.SaveBills(bm);
+                    return View("OrderSuccess");
                 }
-                return View("OrderSuccess");
+                return View("Checkout");
             }
             else
             {

@@ -2,6 +2,7 @@
 @{
     Layout = "~/Views/Shared/_Layout_Admin.cshtml";
 }
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model IEnumerable<OrderModel>
 <div class="col-md-12">
     <div class="card">
@@ -40,8 +41,10 @@
                                     <td>@data.UserName</td>
                                     <td>
                                         <div class="form-button-action">
-                                            <button class="btn btn-secondary me-2">Edit</button>
-                                            <button class="btn btn-danger" id="Delete" onclick="confirmDelete(@data.UserId)">Delete</button>
+                                            <a asp-controller="Order" asp-area="Admin" asp-action="ViewOrder" asp-route-id="@data.OrderId">
+                                                <button class="btn btn-info me-2">View</button>
+                                            </a>
+                                            <button class="btn btn-danger" id="Delete" onclick="confirmDelete(@data.OrderId)">Cancel</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -82,7 +85,7 @@
                 className: "btn btn-danger",
             },
             confirm: {
-                text: "Yes, delete it!",
+                text: "Yes, Cancel this Order!",
                 className: "btn btn-success",
             },
         },
@@ -90,7 +93,7 @@
         if (willDelete) {
           $.ajax({
               type:"DELETE",
-              url:`/OrderDelete/${id}`,
+              url:`/DeleteOrder/${id}`,
               success:function(data){
                 swal(data.message, {
                 icon: "success",
