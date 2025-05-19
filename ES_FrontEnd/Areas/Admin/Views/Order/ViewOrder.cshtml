@@ -72,25 +72,31 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script type="text/javascript">
-    function GenrateBill(){
-        var id = $("#OrderId").val();
-        console.log(id);
-        $.ajax({
-            type:"POST",
-            url:"/SaveBills",
-            data:{
-                "Amount":$("#Amount").val(),
-                "Discount":1,
-                "TotalAmount":$("#TotalAmount").val(),
-                "OrderId":$("#OrderId").val(),
-                "UserId":$("#UserId").val()
-            },
-            success:function(data){
-                console.log(data);
-                // window.location.reload();
-            }
-        });
-    }
-</script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        function GenrateBill(){
+            var id = $("#OrderId").val();
+            console.log(id);
+            console.log($("#Amount").val());
+            console.log($("#TotalAmount").val());
+            console.log($("#UserId").val());
+            $.ajax({
+                type: "POST",
+                url: "/Admin/Order/SaveBills", // Updated to include area and controller
+                data: {
+                    "Amount": $("#Amount").val(),
+                    "Discount": 1,
+                    "TotalAmount": $("#TotalAmount").val(),
+                    "OrderId": $("#OrderId").val(),
+                    "UserId": $("#UserId").val()
+                },
+                success: function(data){
+                    console.log(data);
+                    window.location.reload();
+                },
+                error: function(xhr, status, error){
+                    console.error("Error:", error);
+                }
+            });
+        }
+    </script>

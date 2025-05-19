@@ -97,12 +97,14 @@ namespace ES_FrontEnd.Areas.Admin.Controllers
 
         #region SaveBills
         [HttpPost]
-        [Route("/SaveBills")]
-        [Microsoft.AspNetCore.Authorization.AllowAnonymous] // Add this attribute to bypass CheckAccess
-        public async Task<bool> SaveBills(BillModel Bill)
+        public async Task<IActionResult> SaveBills(BillModel Bill)
         {
             BillController bc = new BillController(_httpClient);
-            return await bc.Save(Bill);
+            if (await bc.Save(Bill))
+            {
+                return Json(new { message = "Bill Inserted" });
+            }
+            return Json(new { message = "Bill Not Inserted" });
         }
         #endregion
     }

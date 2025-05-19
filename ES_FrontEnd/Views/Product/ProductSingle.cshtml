@@ -200,12 +200,12 @@
         function fetchSpecification(){
         let pid = $("#ProductId").val();
         let ptype = document.getElementById("ptype").innerText;
-
         if(ptype == "AC"){
             $.ajax({
             type:"GET",
             url:`/GetSpecificationAC/${pid}`,
             success:function(data){
+                console.log(data);
                 document.getElementById("dataModel").innerText = data.modelNumber;
                 document.getElementById("dataBrand").innerText = data.brand;
                 document.getElementById("dataCap").innerText = data.capacity + " Ton";
